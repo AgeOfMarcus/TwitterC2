@@ -28,7 +28,7 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 def ignore():
         try:
-                with open(path+"\\ignore.txt","r") as idfile:
+                with open("ignore.txt","r") as idfile:
                         ids = idfile.read().split("\n")
                         idlist = []
                         for ID in ids:
@@ -36,10 +36,10 @@ def ignore():
                                         idlist.append(int(ID))
                         return idlist
         except:
-                with open(path+"\\ignore.txt","w") as idfile: return []
+                with open("ignore.txt","w") as idfile: return []
 def add_ignore(ID):
         if not ID in ignore():
-                with open(path+"\\ignore.txt","a") as idfile:
+                with open("ignore.txt","a") as idfile:
                         idfile.write(str(ID)+"\n")
 
 def run_cmd(cmd):

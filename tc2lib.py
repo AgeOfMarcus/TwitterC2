@@ -8,7 +8,7 @@ global username, messages, pause, newMsg
 path = os.path.dirname(os.path.abspath(__file__))
 
 def get_keys():
-        with open(path+"\\keys.txt","r") as keyfile:
+        with open("keys.txt","r") as keyfile:
                 keys = [line.rstrip('\n') for line in keyfile]
                 c1, c2, a1, a2, user, agent = '', '', '', '','', ''
                 for key in keys:

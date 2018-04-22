@@ -20,7 +20,9 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 # Lists and stuff
 queue = [] # ids of posts to handle
-open(path+"\\ignore.txt","a").close()
+try:
+        open(path+"\\ignore.txt","a").close()
+except: open(path+"/ignore.txt","a").close()
 def ignore():
         try:
                 with open(path+"\\ignore.txt","r") as idfile:
@@ -31,11 +33,22 @@ def ignore():
                                         idlist.append(int(ID))
                         return idlist
         except:
-                with open(path+"\\ignore.txt","w") as idfile: ignore()
+                with open(path+"/ignore.txt","r") as idfile:
+                        ids = idfile.read().split("\n")
+                        idlist = []
+                        for ID in ids:
+                                if not ID == '':
+                                        idlist.append(int(ID))
+                        return idlist
 def add_ignore(ID):
-        if not ID in ignore():
-                with open(path+"\\ignore.txt","a") as idfile:
-                        idfile.write(str(ID)+"\n")
+        try:
+                if not ID in ignore():
+                        with open(path+"\\ignore.txt","a") as idfile:
+                                idfile.write(str(ID)+"\n")
+        except:
+                if not ID in ignore():
+                        with open(path+"/ignore.txt","a") as idfile:
+                                idfile.write(str(ID)+"\n")
 pause = 2
 
 
