@@ -222,4 +222,6 @@ def start_agent():
 
 try:
         start_agent()
-except Exception as e: print("[Error]: "+str(e)); pass
+except Exception as e:
+        print("[Error]: "+str(e))
+        start_agent()
