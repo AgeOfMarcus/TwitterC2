@@ -13,6 +13,17 @@ from subprocess import PIPE as pipe
 
 global username, posts, pause, agent_user
 
+path = os.path.dirname(os.path.abspath(__file__))
+pcos = input("Enter your operating system [win/lin]: ").lower()
+while not (pcos == "win" or pcos == "lin"):
+        input("Enter your operating system [win/lin]: ").lower()
+
+if pcos == "win":
+        ignoretxt = path+"\\ignore.txt"
+elif pcos == "lin":
+        ignoretxt = path+"/ignore.txt"
+else: print("Something has gone horribly wrong...")
+
 consumer_key, consumer_secret, access_token, access_secret, username, agent_user = get_keys()
 
 auth = OAuthHandler(consumer_key, consumer_secret)
@@ -24,11 +35,9 @@ pause = 2
 queue = [] # ids of posts to handle
 agents = []
 
-path = os.path.dirname(os.path.abspath(__file__))
-
 def ignore():
         try:
-                with open("ignore.txt","r") as idfile:
+                with open(ignoretxt,"r") as idfile:
                         ids = idfile.read().split("\n")
                         idlist = []
                         for ID in ids:
@@ -36,10 +45,10 @@ def ignore():
                                         idlist.append(int(ID))
                         return idlist
         except:
-                with open("ignore.txt","w") as idfile: return []
+                with open(ignoretxt,"w") as idfile: return []
 def add_ignore(ID):
         if not ID in ignore():
-                with open("ignore.txt","a") as idfile:
+                with open(ignoretxt,"a") as idfile:
                         idfile.write(str(ID)+"\n")
 
 def run_cmd(cmd):

