@@ -3,11 +3,14 @@ import base64
 import ast
 import os
 
-from twitterc2 import pcos
 
 global username, messages, pause, newMsg
 
 path = os.path.dirname(os.path.abspath(__file__))
+if '\\' in list(path):
+        pcos = "win"
+elif '/' in list(path):
+        pcos = "lin"
 
 if pcos == "win":
         keystxt = path+"\\keys.txt"

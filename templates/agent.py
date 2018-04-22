@@ -33,10 +33,9 @@ def run_cmd(cmd):
 mac_addr = ':'.join(("%012X" % get_mac())[i:i + 2] for i in range(0, 12, 2))
 path = os.path.dirname(os.path.abspath(__file__))
 
-testwin = run_cmd("ver")
-if not testwin == "[blank/error]":
+if '\\' in list(path):
         slash = "\\"
-else:
+elif '/' in list(path):
         slash = "/"
 
 # Lists and stuff
