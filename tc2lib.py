@@ -134,6 +134,7 @@ mainmenu = '''
 |            selected zombie(s)                  |
 | persist - add payload to startup folder        |
 |           (Windows only!)                      |
+| upload [filename] - upload file to zombie      |
 --------------------------------------------------
 '''
 

