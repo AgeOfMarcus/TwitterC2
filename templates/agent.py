@@ -201,11 +201,9 @@ def handle_command(command):
                 data = cmd.split("#data#")
                 filename = data[0]
                 filedata = data[1]
-                with open(filename,"w") as out_file:
-                        out_file.write(filedata)
-                with gzip.open(filename,"rb") as compfile:
-                        with open(filename,"wb") as out_file:
-                                out_file.write(compfile.read())
+                filetxt = gzip.decompress(filedata)
+                with open(filename,"wb") as out_file:
+                        out_file.write(filetxt)
                 if res:
                         msg = {"from":agent_name,"to":"server","command":False,"refresh":False}
                         result = "Saved data to [%s]" % filename
