@@ -1,3 +1,6 @@
+# Notice!
+I have paused development of TwitterC2 as I got kinda bored. I am currently working on RTC2, amongst other side projects. Once RTC2 is finished, I will completely re-write TwitterC2 as either TCNC or TC2 (Twitter Command 'N' Control, Twitter C2) with a more interactive interface, a command-line interface, and better functionality.
+
 # TwitterC2
 A Command&amp;Control server using Twitter's API.
 
